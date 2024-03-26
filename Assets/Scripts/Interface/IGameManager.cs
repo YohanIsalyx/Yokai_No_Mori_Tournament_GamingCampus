@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using YokaiNoMori.Enumeration;
@@ -28,5 +29,18 @@ namespace YokaiNoMori.Interface
         /// <param name="actionType">Type of action performed</param>
         public void DoAction(IPawn pawnTarget, Vector2Int position, EActionType actionType);
 
+        /// <summary>
+        /// Retrieve all pawns of a player in the graveyard
+        /// </summary>
+        /// <param name="campType"></param>
+        /// <returns></returns>
+        public List<IPawn> GetReservePawnsByPlayer(ECampType campType);
+
+        /// <summary>
+        /// Retrieve all pawns active of a player on the board (Graveyard not included)
+        /// </summary>
+        /// <param name="campType"></param>
+        /// <returns></returns>
+        public List<IPawn> GetPawnsOnBoard(ECampType campType);
     }
 }

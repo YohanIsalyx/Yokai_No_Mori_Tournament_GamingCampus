@@ -1,16 +1,19 @@
-using System;
 using UnityEngine;
 using YokaiNoMori.Interface;
 
-public class MovementManager
+
+namespace YokaiNoMori.General
 {
-    public void DoMovement(IPawn pawn, Vector2 newPosition)
+    public class MovementManager
     {
-        GameManager.Instance.BoardManager.GetBoardCase(newPosition);
+        public void DoMovement(IPawn pawn, Vector2 newPosition)
+        {
+            //Debug.Log($"Joueur : {GameManager.Instance.CurrentPlayer.GetName()} \nAction : Movement \nPawn : {pawn.GetPawnType()} \nCurrentPosition : {pawn.GetCurrentPosition()} \nnew Position : {newPosition}");
 
-        // TODO
-        // Faire le mouvement uniquement. Et s'il y a une autre pièce, l'envoyer dans le fight manager
 
-        // Créer également le parachuteManager pour le parachutage
+            (pawn.GetCurrentBoardCase() as BoardCase).SetCurrentPawnOnIt(null);
+            (pawn as Pawn).SetCurrentBoardCase(GameManager.Instance.BoardManager.GetBoardCase(newPosition));
+            (pawn.GetCurrentBoardCase() as BoardCase).SetCurrentPawnOnIt(pawn);
+        }
     }
 }

@@ -1,13 +1,23 @@
 using YokaiNoMori.Interface;
+using YokaiNoMori.Enumeration;
+using UnityEngine;
 
-public class FightManager
+
+namespace YokaiNoMori.General
 {
-    public void DoFight(IPawn attack, IPawn defense)
+    public class FightManager
     {
+        public void DoFight(IPawn attack, IPawn defense)
+        {
+            if (defense.GetPawnType() == EPawnType.Koropokkuru)
+            {
+                Debug.Log("KORO DEFEATED");
+                GameManager.Instance.KorropokuruIsDefeated();
+            }
 
-        // SI KOROPOKKURU ==> DEFAITE
-        // SINON SI PIECE EVOLUEE => DIVOLVE
-        // SINON SEND TO GRAVEYARD
-        GameManager.Instance.GraveyardManager.SendToGraveyard(defense, attack.GetCurrentOwner());
+            //Debug.Log($"Attaquant : {attack.GetCurrentOwner().GetName()} avec {attack.GetPawnType()} - Défenseur : {defense.GetCurrentOwner().GetName()} perdant {defense.GetPawnType()}");
+
+            GameManager.Instance.GraveyardManager.SendToGraveyard(defense, attack.GetCurrentOwner());
+        }
     }
 }

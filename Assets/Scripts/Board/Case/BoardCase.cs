@@ -1,45 +1,55 @@
 using UnityEngine;
 using YokaiNoMori.Interface;
 
-public class BoardCase : IBoardCase
+
+namespace YokaiNoMori.General
 {
-	public Vector2 Position
+	public class BoardCase : IBoardCase
 	{
-		get { return m_position; }
-		private set { m_position = value; }
-	}
-
-	public IPawn CurrentPiece
-	{
-		get { return m_currentPiece; }
-		private set { m_currentPiece = value; }
-	}
-
-
-	public BoardCase(int row, int col)
-	{
-        Position = new Vector2(row, col);
-	}
-
-	public void SetCurrentPiece(IPawn piece)
-	{
-		if(CurrentPiece is not null)
+		public Vector2Int Position
 		{
-			GameManager.Instance.FightManager.DoFight(piece, CurrentPiece);
+			get { return m_position; }
+			private set { m_position = value; }
 		}
-        CurrentPiece = piece;
+
+		public IPawn CurrentPawnOnIt
+		{
+			get { return m_currentPawnOnIt; }
+			private set { m_currentPawnOnIt = value; }
+		}
+
+
+		public BoardCase(int x, int y)
+		{
+			Position = new Vector2Int(x, y);
+		}
+
+		public bool IsSpecialBoardCase()
+		{
+			return this is SpecialBoardCase;
+		}
+
+		public void SetCurrentPawnOnIt(IPawn piece)
+		{
+			CurrentPawnOnIt = piece;
+		}
+
+		public Vector2Int GetPosition()
+		{
+			return Position;
+		}
+
+		public IPawn GetPawnOnIt()
+		{
+			return CurrentPawnOnIt;
+		}
+
+		public bool IsBusy()
+		{
+			return CurrentPawnOnIt is not null;
+		}
+
+		private Vector2Int m_position;
+		private IPawn m_currentPawnOnIt;
 	}
-
-    public Vector2Int GetPosition()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public IPawn GetPawnOnIt()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private Vector2 m_position;
-    private IPawn m_currentPiece;
 }

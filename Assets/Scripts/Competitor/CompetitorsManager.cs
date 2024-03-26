@@ -1,80 +1,100 @@
+using System;
 using UnityEngine;
 using YokaiNoMori.Interface;
 
-public class CompetitorsManager
+
+namespace YokaiNoMori.General
 {
-
-    #region Properties
-    public ICompetitor PlayerOne
+    public class CompetitorsManager
     {
-        get { return m_playerOne; }
-        private set { m_playerOne = value; }
-    }
-
-    public ICompetitor PlayerTwo
-    {
-        get { return m_playerTwo; }
-        private set { m_playerTwo = value; }
-    }
-    #endregion
-
-
-
-    #region Private Methods
-
-    private void SelectPlayers()
-    {
-        int rdm = Random.Range(0, 10);
-
-        if(rdm % 2 == 0)
+        #region Properties
+        public ICompetitor PlayerOne
         {
-            PlayerOne = GameManager.Instance.TournamentManager.CompetitorsList[m_currentIndexFirstPlayer];
-            PlayerTwo = GameManager.Instance.TournamentManager.CompetitorsList[m_currentIndexSecondPlayer];
-            Debug.Log("PAIRE");
+            get { return m_playerOne; }
+            private set { m_playerOne = value; }
         }
-        else
+
+        public ICompetitor PlayerTwo
         {
-            PlayerTwo = GameManager.Instance.TournamentManager.CompetitorsList[m_currentIndexFirstPlayer];
-            PlayerOne = GameManager.Instance.TournamentManager.CompetitorsList[m_currentIndexSecondPlayer];
-            Debug.Log("IMPAIR");
+            get { return m_playerTwo; }
+            private set { m_playerTwo = value; }
         }
-    }
 
 
-    #endregion
-
-
-
-    #region Public Methods
-    public void InitPlayer()
-    {
-        m_currentIndexFirstPlayer = 0;
-        m_currentIndexSecondPlayer = 1;
-
-        SelectPlayers();
-    }
-
-    public void NextPlayers()
-    {
-        if (m_currentIndexSecondPlayer >= GameManager.Instance.TournamentManager.CompetitorsList.Count)
+        public bool IsFirstMatch
         {
-            m_currentIndexFirstPlayer++;
-            m_currentIndexSecondPlayer = m_currentIndexFirstPlayer + 1;
+            get { return m_isFirstMatch; }
+            private set { m_isFirstMatch = value; }
         }
-        SelectPlayers();
+
+        #endregion
+
+
+
+        #region Private Methods
+
+        private void SelectPlayers()
+        {
+            if (m_isFirstMatch)
+            {
+                PlayerOne = GameManager.Instance.TournamentManager.CompetitorsList[m_currentIndexFirstPlayer].CurrentCompetitor;
+                PlayerTwo = GameManager.Instance.TournamentManager.CompetitorsList[m_currentIndexSecondPlayer].CurrentCompetitor;
+            }
+            else
+            {
+                PlayerOne = GameManager.Instance.TournamentManager.CompetitorsList[m_currentIndexSecondPlayer].CurrentCompetitor;
+                PlayerTwo = GameManager.Instance.TournamentManager.CompetitorsList[m_currentIndexFirstPlayer].CurrentCompetitor;
+            }
+        }
+
+
+        #endregion
+
+
+
+        #region Public Methods
+        public void InitPlayer()
+        {
+            SelectPlayers();
+        }
+
+        public bool NextPlayers()
+        {
+            bool isContinue = true;
+            if (!IsFirstMatch)
+            {
+                if (m_currentIndexSecondPlayer + 1 >= GameManager.Instance.TournamentManager.CompetitorsList.Count)
+                {
+                    m_currentIndexFirstPlayer++;
+                    m_currentIndexSecondPlayer = m_currentIndexFirstPlayer + 1;
+                    isContinue = m_currentIndexSecondPlayer < GameManager.Instance.TournamentManager.CompetitorsList.Count;
+                }
+                else
+                {
+                    m_currentIndexSecondPlayer += 1;
+                    isContinue = true;
+                }
+            }
+            m_isFirstMatch = !IsFirstMatch;
+            return isContinue;
+        }
+
+        #endregion
+
+
+
+        #region Private members
+        // COMPETITORS SELECTIONS
+        int m_currentIndexFirstPlayer = 0;
+        int m_currentIndexSecondPlayer = 1;
+        private bool m_isFirstMatch = true;
+
+
+        // PLAYERS
+        private ICompetitor m_playerOne;
+        private ICompetitor m_playerTwo;
+
+        #endregion
     }
-    #endregion
 
-
-
-    #region Private members
-    // COMPETITORS SELECTIONS
-    int m_currentIndexFirstPlayer;
-    int m_currentIndexSecondPlayer;
-
-    // PLAYERS
-    private ICompetitor m_playerOne;
-    private ICompetitor m_playerTwo;
-
-    #endregion
 }

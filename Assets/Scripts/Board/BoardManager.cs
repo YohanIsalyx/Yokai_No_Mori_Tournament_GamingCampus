@@ -2,74 +2,101 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using YokaiNoMori.Enumeration;
 using YokaiNoMori.Interface;
 
-
-public class BoardManager
+namespace YokaiNoMori.General
 {
-	public readonly int BOARD_ROWS;
-    public readonly int BOARD_COLUMNS;
-
-
-	public BoardManager(BoardData boardData)
+	public class BoardManager
 	{
-		BOARD_ROWS = boardData.Row;
-		BOARD_COLUMNS = boardData.Col;
-	}
+		public readonly int BOARD_Y;
+		public readonly int BOARD_X;
+		private BoardData m_boardData;
 
-
-	public List<IBoardCase> BoardCases
-	{
-		get { return m_boardCases; }
-		private set { m_boardCases = value; }
-	}
-
-	public void InitBoard()
-    {
-		BoardCases = new List<IBoardCase>();
-
-		for(int row = 0; row < BOARD_ROWS; row++)
+		public BoardManager(BoardData boardData)
 		{
-			for(int column = 0; column < BOARD_COLUMNS; column++)
-			{
-				if(row == 0 || row == 4)
-				{
-                    BoardCases.Add(new SpecialBoardCase(row, column));
-                }
-                else
-                {
-					BoardCases.Add(new BoardCase(row, column));
-                }
-            }
+            BOARD_X = boardData.X;
+            BOARD_Y = boardData.Y;
+            m_boardData = boardData;
+        }
+
+
+		public List<IBoardCase> BoardCases
+		{
+			get { return m_boardCases; }
+			private set { m_boardCases = value; }
 		}
 
-		PlacePieceOnBoard();
-    }
-
-	private void PlacePieceOnBoard()
-	{
-		BoardData boardData = Resources.Load<BoardData>("Datas/Board/4x3");
-
-		foreach (SBoardCase caseData in boardData.BoardCases)
+		public void InitBoard()
 		{
-			foreach (BoardCase bCase in BoardCases)
+			BoardCases = new List<IBoardCase>();
+
+			for (int x = 0; x < BOARD_X; x++)
 			{
-				if(caseData.Position == bCase.Position)
+				for (int y = 0; y < BOARD_Y; y++)
 				{
-					Piece piece = new Piece(bCase, caseData.Camp, caseData.PieceData);
-					bCase.SetCurrentPiece(piece);
+					if (y == 0 || y == 3)
+					{
+						BoardCases.Add(new SpecialBoardCase(x, y));
+					}
+					else
+					{
+						BoardCases.Add(new BoardCase(x, y));
+					}
+				}
+			}
+
+			PlacePieceOnBoard();
+		}
+
+		private void PlacePieceOnBoard()
+		{
+			foreach (SBoardCase caseData in m_boardData.BoardCases)
+			{
+				foreach (BoardCase bCase in BoardCases)
+				{
+					if (caseData.Position == bCase.Position)
+					{
+						Pawn pawn = new Pawn(bCase, caseData.Camp, caseData.PieceData, GameManager.Instance);
+						bCase.SetCurrentPawnOnIt(pawn);
+						GameManager.Instance.AddPawnToList(pawn);
+					}
 				}
 			}
 		}
+
+		public IBoardCase GetBoardCase(Vector2 position)
+		{
+			IBoardCase boardCase = BoardCases.FirstOrDefault(x => x.GetPosition() == position);
+			return boardCase;
+
+        }
+
+		public List<IPawn> GetPawnsNearbyAPosition(Vector2Int position)
+		{
+			List<IPawn> pawnsList = new List<IPawn>();
+            Vector2Int currentPositionToCheck;
+
+            foreach (EMovementType currentState in Enum.GetValues(typeof(EMovementType)))
+			{
+                currentPositionToCheck = position;
+				currentPositionToCheck += MovementTypeValue.GetDirection(currentState);
+
+				if (currentPositionToCheck.x.IsBetween(0, BOARD_X) && currentPositionToCheck.y.IsBetween(0, BOARD_Y))
+				{
+                    IPawn currentPawnChecked = GetBoardCase(currentPositionToCheck).GetPawnOnIt();
+
+                    if (currentPawnChecked != null)
+                        pawnsList.Add(currentPawnChecked);
+                }
+            }
+
+            return pawnsList;
+		}
+
+
+
+
+		private List<IBoardCase> m_boardCases;
 	}
-
-	public IBoardCase GetBoardCase(Vector2 position)
-	{
-        return BoardCases.FirstOrDefault(x => x.GetPosition() == position);
-    }
-
-
-
-
-    private List<IBoardCase> m_boardCases;
 }
