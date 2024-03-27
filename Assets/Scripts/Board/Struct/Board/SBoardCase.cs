@@ -9,8 +9,8 @@ namespace YokaiNoMori.General
     public struct SBoardCase
     {
         public Vector2 Position;
-        public EPawnType PieceToSpawn;
-        public CommonPawnData PieceData;
+        public EPawnType PawnToSpawn;
+        public CommonPawnData PawnData;
         public ECampType Camp;
     }
 }

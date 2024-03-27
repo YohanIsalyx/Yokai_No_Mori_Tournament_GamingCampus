@@ -4,7 +4,7 @@ using UnityEngine;
 namespace YokaiNoMori.General
 {
 
-	[CreateAssetMenu(fileName = "Evolving Piece Data", menuName = "Pieces/Evolving Piece Data", order = 2)]
+	[CreateAssetMenu(fileName = "Evolving Pawn Data", menuName = "Pawns/Evolving Pawn Data", order = 2)]
 	public class EvolvingPawnData : CommonPawnData
 	{
 		[SerializeField]

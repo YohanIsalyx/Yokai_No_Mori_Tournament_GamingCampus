@@ -11,7 +11,7 @@ namespace YokaiNoMori.General
             (pawn as Pawn).SetCurrentBoardCase(GameManager.Instance.BoardManager.GetBoardCase(newPosition));
             (pawn.GetCurrentBoardCase() as BoardCase).SetCurrentPawnOnIt(pawn);
 
-            GameManager.Instance.GraveyardManager.RemovePieceToGraveyard(pawn);
+            GameManager.Instance.GraveyardManager.RemovePawnToGraveyard(pawn);
         }
     }
 }

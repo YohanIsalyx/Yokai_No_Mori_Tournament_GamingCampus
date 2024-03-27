@@ -11,6 +11,7 @@ namespace YokaiNoMori.Enumeration
         VALIDATION_ACTION,
         CHECK_WIN_CONDITION,
         UNEXPECTED_ACTION,
+        UNEXPECTED_ERROR,
         NEXT_PLAYER,
         FINISH_GAME,
         NEXT_GAME,

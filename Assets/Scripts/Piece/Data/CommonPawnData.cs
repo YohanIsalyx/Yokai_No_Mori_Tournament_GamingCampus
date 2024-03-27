@@ -18,11 +18,11 @@ namespace YokaiNoMori.General
 
 
 		[SerializeField]
-		private EPawnType m_pieceType;
-		public EPawnType PieceType
+		private EPawnType m_pawnType;
+		public EPawnType PawnType
 		{
-			get { return m_pieceType; }
-			private set { m_pieceType = value; }
+			get { return m_pawnType; }
+			private set { m_pawnType = value; }
 		}
 	}
 

@@ -399,7 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a15d08dee1d504ab54a5626b6f7461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScenarioNumber: 5
+  ScenarioNumber: 1
 --- !u!1 &1601664248
 GameObject:
   m_ObjectHideFlags: 0

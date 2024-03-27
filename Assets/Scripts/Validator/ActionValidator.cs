@@ -49,7 +49,7 @@ namespace YokaiNoMori.General
             // S'il bouge le Koropokurru
             if (pawn.GetPawnType() == EPawnType.Koropokkuru)
             {
-                if (Something(pawn, newPosition) == EValidationType.KOROPPOKURU_CHECKMATE)
+                if (CheckKoropokurruIsCheckMate(pawn, newPosition))
                 {
                     return EValidationType.KOROPPOKURU_CHECKMATE;
                 }
@@ -58,7 +58,7 @@ namespace YokaiNoMori.General
             else
             {
                 IPawn koropokurru = GameManager.Instance.GetPawnsOnBoard(pawn.GetCurrentOwner().GetCamp()).First(x => x.GetPawnType() == EPawnType.Koropokkuru);
-                if (Something(koropokurru, koropokurru.GetCurrentPosition()) == EValidationType.KOROPPOKURU_CHECKMATE)
+                if (CheckKoropokurruIsCheckMate(koropokurru, koropokurru.GetCurrentPosition()))
                 {
                     return EValidationType.KOROPPOKURU_CHECKMATE;
                 }
@@ -70,7 +70,7 @@ namespace YokaiNoMori.General
             return EValidationType.LEGAL_ACTION;
         }
 
-        private static EValidationType Something(IPawn pawn, Vector2Int position)
+        public static bool CheckKoropokurruIsCheckMate(IPawn pawn, Vector2Int position)
         {
             List<IPawn> pawnsList = GameManager.Instance.BoardManager.GetPawnsNearbyAPosition(position);
 
@@ -84,13 +84,12 @@ namespace YokaiNoMori.General
                         foreach (Vector2Int direction in pawnToCheck.GetDirections())
                         {
                             if (position == pawnToCheck.GetCurrentPosition() + (direction * GameManager.Instance.GetOrientationFromPawn(pawnToCheck)))
-                                return EValidationType.KOROPPOKURU_CHECKMATE;
+                                return true;
                         }
                     }
                 }
             }
-
-            return EValidationType.NONE;
+            return false;
         }
 
         public static EValidationType CheckParachutage(IPawn pawn, Vector2 newPosition, int maxX, int maxY, int minX = 0, int minY = 0)

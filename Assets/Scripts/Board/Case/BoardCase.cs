@@ -29,9 +29,9 @@ namespace YokaiNoMori.General
 			return this is SpecialBoardCase;
 		}
 
-		public void SetCurrentPawnOnIt(IPawn piece)
+		public void SetCurrentPawnOnIt(IPawn pawn)
 		{
-			CurrentPawnOnIt = piece;
+			CurrentPawnOnIt = pawn;
 		}
 
 		public Vector2Int GetPosition()

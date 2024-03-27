@@ -1,4 +1,3 @@
-using UnityEngine;
 using YokaiNoMori.Enumeration;
 using YokaiNoMori.Interface;
 
@@ -35,27 +34,27 @@ namespace YokaiNoMori.General
 
 
 
-		public void SendToGraveyard(IPawn piece, ICompetitor player)
+		public void SendToGraveyard(IPawn pawn, ICompetitor player)
 		{
-            (piece as Pawn).GetCapturedBy(player);
+            (pawn as Pawn).GetCapturedBy(player);
 
             if (player.GetCamp() == ECampType.PLAYER_ONE)
-				PlayerOneGraveyard.AddToGraveyard(piece);
+				PlayerOneGraveyard.AddToGraveyard(pawn);
 			else if (player.GetCamp() == ECampType.PLAYER_TWO)
-				PlayerTwoGraveyard.AddToGraveyard(piece);
+				PlayerTwoGraveyard.AddToGraveyard(pawn);
 			else
-				throw new System.Exception("ERROR : Piece is send in NONE Camp");
+				throw new System.Exception("ERROR : Pawn is send in NONE Camp");
 
         }
 
-		public void RemovePieceToGraveyard(IPawn piece)
+		public void RemovePawnToGraveyard(IPawn pawn)
 		{
-			if (piece.GetCurrentOwner().GetCamp() == ECampType.PLAYER_ONE)
-				PlayerOneGraveyard.RemoveToGraveyard(piece);
-			else if (piece.GetCurrentOwner().GetCamp() == ECampType.PLAYER_TWO)
-				PlayerTwoGraveyard.RemoveToGraveyard(piece);
+			if (pawn.GetCurrentOwner().GetCamp() == ECampType.PLAYER_ONE)
+				PlayerOneGraveyard.RemoveToGraveyard(pawn);
+			else if (pawn.GetCurrentOwner().GetCamp() == ECampType.PLAYER_TWO)
+				PlayerTwoGraveyard.RemoveToGraveyard(pawn);
 			else
-				throw new System.Exception("ERROR : Piece is send in NONE Camp");
+				throw new System.Exception("ERROR : Pawn is send in NONE Camp");
 		}
 
 

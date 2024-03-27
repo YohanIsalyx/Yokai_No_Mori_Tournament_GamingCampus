@@ -3,6 +3,7 @@ namespace YokaiNoMori.Enumeration
     public enum EValidationType
     {
         NONE,
+        EXCEPTION_CATCHED,
         LEGAL_ACTION,
         ILLEGAL_ACTION,
         KOROPPOKURU_CHECKMATE,

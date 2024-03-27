@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using YokaiNoMori.Enumeration;
-using YokaiNoMori.General;
 
 
 namespace YokaiNoMori.Interface

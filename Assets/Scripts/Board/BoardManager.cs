@@ -46,10 +46,10 @@ namespace YokaiNoMori.General
 				}
 			}
 
-			PlacePieceOnBoard();
+			PlacePawnOnBoard();
 		}
 
-		private void PlacePieceOnBoard()
+		private void PlacePawnOnBoard()
 		{
 			foreach (SBoardCase caseData in m_boardData.BoardCases)
 			{
@@ -57,7 +57,7 @@ namespace YokaiNoMori.General
 				{
 					if (caseData.Position == bCase.Position)
 					{
-						Pawn pawn = new Pawn(bCase, caseData.Camp, caseData.PieceData, GameManager.Instance);
+						Pawn pawn = new Pawn(bCase, caseData.Camp, caseData.PawnData, GameManager.Instance);
 						bCase.SetCurrentPawnOnIt(pawn);
 						GameManager.Instance.AddPawnToList(pawn);
 					}

@@ -44,7 +44,7 @@ namespace YokaiNoMori.General
             ChangeCamp(currentCamp);
         }
 
-        public void InitPiece()
+        public void InitPawn()
         {
             CurrentPlayerOwner = CurrentPlayerCamp == ECampType.PLAYER_ONE ? GameManager.Instance.CompetitorsManager.PlayerOne : GameManager.Instance.CompetitorsManager.PlayerTwo;
         }
@@ -53,8 +53,8 @@ namespace YokaiNoMori.General
         {
             if (PawnData is EvolvePawnData)
             {
-                Debug.Log($"{PawnData.PieceType} evolve to {(PawnData as EvolvePawnData).EvolutionPiece.PieceType}");
-                PawnData = (PawnData as EvolvePawnData).EvolutionPiece;
+                //Debug.Log($"{PawnData.PawnType} evolve to {(PawnData as EvolvePawnData).EvolutionPawn.PawnType}");
+                PawnData = (PawnData as EvolvePawnData).EvolutionPawn;
             }
         }
 
@@ -62,7 +62,7 @@ namespace YokaiNoMori.General
         {
             if (PawnData is EvolvingPawnData)
             {
-                Debug.Log($"{PawnData.PieceType} evolve to {(PawnData as EvolvingPawnData).DevolvePawnData.PieceType}");
+                //Debug.Log($"{PawnData.PawnType} divolve to {(PawnData as EvolvingPawnData).DevolvePawnData.PawnType}");
                 PawnData = (PawnData as EvolvingPawnData).DevolvePawnData;
             }
         }
@@ -112,7 +112,7 @@ namespace YokaiNoMori.General
 
         public EPawnType GetPawnType()
         {
-            return m_pawnData.PieceType;
+            return m_pawnData.PawnType;
         }
 
         public void InitOwner()

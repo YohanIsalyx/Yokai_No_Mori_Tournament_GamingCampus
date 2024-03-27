@@ -119,6 +119,9 @@ namespace YokaiNoMori.General
                 case EGameState.CHECK_WIN_CONDITION:
                     CheckWinConditionUpdate();
                     break;
+                case EGameState.UNEXPECTED_ERROR:
+                    UnexpectedErrorUpdate();
+                    break;
                 case EGameState.UNEXPECTED_ACTION:
                     UnexpectedActionUpdate();
                     break;
@@ -214,8 +217,16 @@ namespace YokaiNoMori.General
 
 
                 //Debug.Log("====== TURN PLAYER ======");
-                CurrentPlayer.GetDatas();
-                CurrentPlayer.StartTurn();
+                try
+                {
+                    CurrentPlayer.GetDatas();
+                    CurrentPlayer.StartTurn();
+                }
+                catch(Exception ex)
+                {
+                    Debug.LogError($"{ex.Message} {ex.StackTrace}");
+                    SetCurrentState(EGameState.UNEXPECTED_ERROR);
+                }
             }
         }
 
@@ -270,9 +281,11 @@ namespace YokaiNoMori.General
 
                 if (m_isKorropokuruDefeated)
                 {
-                    SetCurrentState(EGameState.FINISH_GAME);
                     m_isKorropokuruDefeated = false;
+                    SetCurrentState(EGameState.FINISH_GAME);
                 }
+                else if (IsKoropokurruIsSafeAndWinCase())
+                    SetCurrentState(EGameState.FINISH_GAME);
                 else
                     SetCurrentState(EGameState.NEXT_PLAYER);
 
@@ -303,6 +316,17 @@ namespace YokaiNoMori.General
             }
         }
 
+        private void UnexpectedErrorUpdate()
+        {
+            if(m_isFirstTimeInState)
+            {
+                m_isFirstTimeInState = false;
+
+                m_validationType = EValidationType.EXCEPTION_CATCHED;
+                SetCurrentState(EGameState.FINISH_GAME);
+            }
+        }
+
         private void NextPlayerUpdate()
         {
             if (m_isFirstTimeInState)
@@ -324,8 +348,6 @@ namespace YokaiNoMori.General
             if (m_isFirstTimeInState)
             {
                 m_isFirstTimeInState = false;
-
-
                 //Debug.Log("====== FINISH GAME ======");
 
                 if (m_validationType == EValidationType.LEGAL_ACTION || m_validationType == EValidationType.KOROPPOKURU_CHECKMATE)
@@ -362,8 +384,6 @@ namespace YokaiNoMori.General
 
             }
         }
-
-
 
         private void EndTournamentUpdate()
         {
@@ -407,6 +427,26 @@ namespace YokaiNoMori.General
         private void DoPawnParachute()
         {
             m_parachuteManager.DoParachute(m_pawnToDoAction, m_askedPawnPosition);
+        }
+
+
+        private bool IsKoropokurruIsSafeAndWinCase()
+        {
+            if(m_pawnToDoAction.GetPawnType() == EPawnType.Koropokkuru)
+            {
+                if(m_pawnToDoAction.GetCurrentBoardCase() is SpecialBoardCase)
+                {
+                    if(CurrentPlayer.GetCamp() == ECampType.PLAYER_ONE && !ActionValidator.CheckKoropokurruIsCheckMate(m_pawnToDoAction, m_pawnToDoAction.GetCurrentPosition()) && m_pawnToDoAction.GetCurrentPosition().y == 3)
+                    {
+                        return true;
+                    }
+                    else if(CurrentPlayer.GetCamp() == ECampType.PLAYER_TWO && !ActionValidator.CheckKoropokurruIsCheckMate(m_pawnToDoAction, m_pawnToDoAction.GetCurrentPosition()) && m_pawnToDoAction.GetCurrentPosition().y == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         #endregion
@@ -463,9 +503,9 @@ namespace YokaiNoMori.General
         public List<IPawn> GetReservePawnsByPlayer(ECampType campType)
         {
             if (campType == ECampType.PLAYER_ONE)
-                return GraveyardManager.PlayerOneGraveyard.Pieces;
+                return GraveyardManager.PlayerOneGraveyard.Pawns;
             else
-                return GraveyardManager.PlayerTwoGraveyard.Pieces;
+                return GraveyardManager.PlayerTwoGraveyard.Pawns;
         }
 
         public List<IPawn> GetPawnsOnBoard(ECampType campType)
