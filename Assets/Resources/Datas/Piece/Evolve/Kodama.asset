@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Kodama
   m_EditorClassIdentifier: 
   m_movementType: 2
-  m_pieceType: 0
-  m_evolutionPiece: {fileID: 11400000, guid: 0d70707b896e574439a15695d09493f2, type: 2}
+  m_pawnType: 0
+  m_evolutionPawn: {fileID: 11400000, guid: 0d70707b896e574439a15695d09493f2, type: 2}

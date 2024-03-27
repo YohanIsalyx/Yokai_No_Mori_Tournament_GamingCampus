@@ -69,7 +69,6 @@ namespace YokaiNoMori.General
 		{
 			IBoardCase boardCase = BoardCases.FirstOrDefault(x => x.GetPosition() == position);
 			return boardCase;
-
         }
 
 		public List<IPawn> GetPawnsNearbyAPosition(Vector2Int position)

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Kitsune
   m_EditorClassIdentifier: 
   m_movementType: 165
-  m_pieceType: 2
+  m_pawnType: 2

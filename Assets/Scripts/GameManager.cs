@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using YokaiNoMori.Enumeration;
 using YokaiNoMori.Interface;
+using YokaiNoMori.Struct;
 
 
 namespace YokaiNoMori.General
@@ -248,8 +249,8 @@ namespace YokaiNoMori.General
 
                 if (m_validationType == EValidationType.LEGAL_ACTION || m_validationType == EValidationType.KOROPPOKURU_CHECKMATE)
                 {
-
-                    Debug.Log($"Joueur : {CurrentPlayer.GetName()} \nAction : {m_actionTypeRequested} \nPawn : {m_pawnToDoAction.GetPawnType()} \ncurrent position : {m_pawnToDoAction.GetCurrentPosition()} \nnew Position : {m_askedPawnPosition} \nPawn to the new position : {BoardManager.GetBoardCase(m_askedPawnPosition).GetPawnOnIt()?.GetPawnType() + " appartenant à " + BoardManager.GetBoardCase(m_askedPawnPosition).GetPawnOnIt()?.GetCurrentOwner().GetName()}");
+                    m_lastAction.SetAction(CurrentPlayer.GetCamp(), m_pawnToDoAction.GetPawnType(), m_actionTypeRequested, m_pawnToDoAction.GetCurrentPosition(), m_askedPawnPosition, BoardManager.GetBoardCase(m_askedPawnPosition).GetPawnOnIt());
+                    m_lastAction.ShowActionDebug();
 
                     if (m_actionTypeRequested == EActionType.MOVE)
                     {
@@ -271,7 +272,6 @@ namespace YokaiNoMori.General
 
         private void CheckWinConditionUpdate()
         {
-
             if (m_isFirstTimeInState)
             {
                 m_isFirstTimeInState = false;
@@ -429,7 +429,6 @@ namespace YokaiNoMori.General
             m_parachuteManager.DoParachute(m_pawnToDoAction, m_askedPawnPosition);
         }
 
-
         private bool IsKoropokurruIsSafeAndWinCase()
         {
             if(m_pawnToDoAction.GetPawnType() == EPawnType.Koropokkuru)
@@ -518,6 +517,11 @@ namespace YokaiNoMori.General
             m_isKorropokuruDefeated = true;
         }
 
+        SAction IGameManager.GetLastAction()
+        {
+            return m_lastAction;
+        }
+
         #endregion
 
         #region Private members
@@ -551,6 +555,8 @@ namespace YokaiNoMori.General
         private EActionType m_actionTypeRequested = EActionType.NONE;
         EValidationType m_validationType = EValidationType.NONE;
         private bool m_isKorropokuruDefeated = false;
+
+        private SAction m_lastAction;
         #endregion
 
     }

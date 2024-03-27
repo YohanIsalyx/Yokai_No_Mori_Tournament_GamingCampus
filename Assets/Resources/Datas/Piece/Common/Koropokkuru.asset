@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Koropokkuru
   m_EditorClassIdentifier: 
   m_movementType: -1
-  m_pieceType: 4
+  m_pawnType: 4

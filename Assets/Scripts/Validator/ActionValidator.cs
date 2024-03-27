@@ -31,7 +31,6 @@ namespace YokaiNoMori.General
             Vector2Int currentPosition = currentCase.GetPosition();
             int orientation = GameManager.Instance.GetOrientationFromPawn(pawn);
 
-
             foreach (Vector2Int direction in pawn.GetDirections())
             {
                 validPosition.Add(currentPosition + (direction * orientation));

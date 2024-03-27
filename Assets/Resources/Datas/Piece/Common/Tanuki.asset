@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Tanuki
   m_EditorClassIdentifier: 
   m_movementType: 90
-  m_pieceType: 3
+  m_pawnType: 3
